@@ -6,12 +6,12 @@
 .myId {
 	margin-right: 5rem;
 	border-radius: 5px;
-	background: #c9d6ff; /* fallback for old browsers */
-	background: -webkit-linear-gradient(to right, #e2e2e2, #c9d6ff); /* Chrome 10-25, Safari 5.1-6 */
+	background: #161616; /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #0e0d0d, #0f0f0f); /* Chrome 10-25, Safari 5.1-6 */
 	background: linear-gradient(
 		to right,
-		#e2e2e2,
-		#c9d6ff
+		#9ecff8,
+		#6a4deb
 	); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 	padding: 2rem;
@@ -42,10 +42,10 @@
 body {
     background:
     linear-gradient(
-      rgba(0, 0, 0, 0.3), 
-      rgba(0, 0, 0, 0.3)
-    ),
-    url(https://images.unsplash.com/photo-1546514355-7fdc90ccbd03?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80);
+      rgba(126, 53, 53, 0.3), 
+      rgba(233, 8, 8, 0.3)
+    );
+    /*url(https://dz01iyojmxk8t.cloudfront.net/wp-content/uploads/2020/04/28115102/Microsoft-Teams.png);*/
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;

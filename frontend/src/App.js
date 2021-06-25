@@ -3,19 +3,28 @@ import IconButton from "@material-ui/core/IconButton"
 import TextField from "@material-ui/core/TextField"
 import AssignmentIcon from "@material-ui/icons/Assignment"
 import PhoneIcon from "@material-ui/icons/Phone"
-import {  PhoneDisabled } from '@material-ui/icons';
-import {  Paper,Grid,Typography } from '@material-ui/core';
 import React, { useEffect, useRef, useState } from "react"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import Peer from "simple-peer"
-import{ io } from "socket.io-client"
+import {  Paper,Grid,Typography,makeStyles } from '@material-ui/core';
+import io from "socket.io-client"
 import "./App.css"
+const useStyles = makeStyles((theme) => ({
+	root: {
+	  flexGrow: 1,
+	},
+	paper: {
+	  padding: theme.spacing(2),
+	  textAlign: 'center',
+	  color: theme.palette.text.secondary,
+	},
+  }));
 
 
 const socket = io.connect('http://localhost:5000')
 function App() {
 	const [ me, setMe ] = useState("")
-	const [ stream, setStream ] = useState(null)
+	const [ stream, setStream ] = useState()
 	const [ receivingCall, setReceivingCall ] = useState(false)
 	const [ caller, setCaller ] = useState("")
 	const [ callerSignal, setCallerSignal ] = useState()
@@ -29,15 +38,15 @@ function App() {
 
 	useEffect(() => {
 		navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
-			setStream(stream);
-				myVideo.current.srcObject = stream;
-		});
+			setStream(stream)
+				myVideo.current.srcObject = stream
+		})
 
 	socket.on("me", (id) => {
 			setMe(id)
 		})
 
-		socket.on("calluser", (data) => {
+		socket.on("callUser", (data) => {
 			setReceivingCall(true)
 			setCaller(data.from)
 			setName(data.name)
@@ -95,29 +104,30 @@ function App() {
 		connectionRef.current.destroy()
 		window.location.reload();
 	}
+	const classes = useStyles();
 
 	return (
-		<>	
-			<h1 style={{ textAlign: "center", color: '#00008B' ,fontFamily:"Cambria" }}>Microsoft Teams</h1>
+		<>
+			<h1 style={{ textAlign: "center", color: '#fff' }}>Microsoft Teams</h1>
 		<div className="container">
 			<div className="video-container">
 				<div className="video">
-					{stream && (
-						  <Grid item xs={12} md={6}>
-							<Typography variant="h5" gutterBottom>Me</Typography>
-							<video playsInline muted ref={myVideo} autoPlay style={{ width: "400px" }} />
+				{stream && (
+						  <Grid item xs={12} md={8}>
+							  <Paper className={classes.paper}>Me</Paper>
+							<video playsInline muted ref={myVideo} autoPlay style={{ width: "300px" }} />
 						  </Grid>
 					)};
-				</div>
+					</div>
 				<div className="video">
-				<Grid item xs={12} md={6}>
-				<Typography variant="h5" gutterBottom>{name || 'Recipient Name'}</Typography>
+				<Grid item xs={12} md={8}>
+				<Paper className={classes.paper}>{name || "Recipient Name"}</Paper>
 					{callAccepted && !callEnded ?
-					<video playsInline ref={userVideo} autoPlay style={{ width: "300px"}} />:null}
-				  </Grid>
-
+					<video playsInline ref={userVideo} autoPlay style={{ width: "300px"}} />:
+					null}
+					</Grid>
 				</div>
-				</div>
+			</div>
 			<div className="myId">
 				<TextField
 					id="filled-basic"
@@ -127,9 +137,8 @@ function App() {
 					onChange={(e) => setName(e.target.value)}
 					style={{ marginBottom: "20px" }}
 				/>
-        {console.log(me)}
+				{console.log(me)}
 				<CopyToClipboard text={me} style={{ marginBottom: "2rem" }}>
-      
 					<Button variant="contained" color="primary" startIcon={<AssignmentIcon fontSize="large" />}>
 						Copy ID
 					</Button>
@@ -140,15 +149,15 @@ function App() {
 					label="ID to call"
 					variant="filled"
 					value={idToCall}
-					onChange={(f) => setIdToCall(f.target.value)}
+					onChange={(e) => setIdToCall(e.target.value)}
 				/>
 				<div className="call-button">
 					{callAccepted && !callEnded ? (
-						<Button variant="contained" color='secondary' startIcon={<PhoneDisabled fontSize="large" />} fullWidth onClick={leaveCall}>
+						<Button variant="contained" color="secondary" onClick={leaveCall}>
 							Hang Up
 						</Button>
 					) : (
-						<IconButton variant="contained" color='primary' aria-label="call" fullWidth onClick={() => callUser(idToCall)}>
+						<IconButton color="primary" aria-label="call" onClick={() => callUser(idToCall)}>
 							<PhoneIcon fontSize="large" />
 							Call
 						</IconButton>
@@ -157,9 +166,9 @@ function App() {
 				</div>
 			</div>
 			<div>
-				{receivingCall && !callAccepted ? (
+			{receivingCall && !callAccepted ? (
 						<div className="caller">
-						<Button variant="contained" color='primary' onClick={answerCall}>
+						<Button variant="contained" color='secondary' onClick={answerCall}>
 							Answer {name} is calling
 						</Button>
 					</div>
